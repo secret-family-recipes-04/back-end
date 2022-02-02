@@ -4,7 +4,17 @@ function getAllRecipes() {
     return db('recipes')
 }
 
+function getById() {
+    return
+}
+
+
+function insert() {
+    return
+}
 
 module.exports = {
-    getAllRecipes
+    getAllRecipes,
+    getById,
+    insert
 }
