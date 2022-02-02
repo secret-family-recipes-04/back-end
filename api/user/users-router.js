@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
         .catch(err => next(err))
   })
   
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     Users.insert(req.body)
         .then(user => res.status(201).json(user))
         .catch(err => next(err))
