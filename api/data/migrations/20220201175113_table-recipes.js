@@ -5,6 +5,7 @@ exports.up = function (knex) {
         tbl.text('recipe_name', 128)
           .unique()
           .notNullable();
+        tbl.text('source', 128)
       })
       .createTable('ingredients', tbl => {
         tbl.increments('ingredient_id');
