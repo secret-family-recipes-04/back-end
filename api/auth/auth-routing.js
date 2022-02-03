@@ -3,7 +3,9 @@ const { checkRegisterPayload } = require('./auth-middleware')
 const Users = require('../user/users-model')
 const passport = require('passport')
 
-router.post('/login', passport.authenticate('local'))
+router.post('/login', passport.authenticate('local'), (req, res, next) => {
+    res.status(200).json(req.user)
+})
 
 router.post('/register', checkRegisterPayload, (req, res, next) => {
     Users.insert(req.body)
