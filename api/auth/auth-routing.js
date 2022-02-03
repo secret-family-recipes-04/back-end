@@ -3,7 +3,9 @@ const { checkRegisterPayload } = require('./auth-middleware')
 const Users = require('../user/users-model')
 const passport = require('passport')
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', (req, res, next) => {
+    res.set('Access-Control-Allow-Origin', '*')
+} , passport.authenticate('local', {
     successRedirect: 'https://secret-family-recipes-04.herokuapp.com/',
     failureRedirect: 'https://secret-family-recipes-04.herokuapp.com/login',
     failureFlash: false
