@@ -3,11 +3,7 @@ const { checkRegisterPayload } = require('./auth-middleware')
 const Users = require('../user/users-model')
 const passport = require('passport')
 
-router.post('/login', passport.authenticate('local', {
-    successRedirect: 'https://secret-family-recipes-04.herokuapp.com/',
-    failureRedirect: 'https://secret-family-recipes-04.herokuapp.com/login',
-    failureFlash: false
-}))
+router.post('/login', passport.authenticate('local'))
 
 router.post('/register', checkRegisterPayload, (req, res, next) => {
     Users.insert(req.body)
