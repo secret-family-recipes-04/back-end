@@ -1,5 +1,6 @@
 const express = require('express')
 const Users = require('./users-model')
+const { checkRegisterPayload } = require('./users-middleware')
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
@@ -7,8 +8,14 @@ router.get('/', (req, res, next) => {
         .then(users => res.status(200).json(users))
         .catch(err => next(err))
   })
-  
-router.post('/', (req, res, next) => {
+
+router.get('/:id', (req, res, next) => {
+    Users.getBy('id', req.params.id)
+      .then(user => res.status(200).json(user))
+      .catch(err => next(err))
+})
+
+router.post('/register', checkRegisterPayload, (req, res, next) => {
   
     Users.insert(req.body)
         .then(user => {

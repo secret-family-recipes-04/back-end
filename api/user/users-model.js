@@ -2,6 +2,8 @@ const db = require('../data/db-config')
 
 function getAll() { return db('users') }
 
+function getBy(key, value) { return db('users').where({[key]: value}).first() }
+
 async function insert(user) {
     // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
     // AND OBTAIN WHATEVER COLUMNS WE NEED FROM THE NEWLY CREATED/UPDATED RECORD
@@ -11,5 +13,6 @@ async function insert(user) {
 
 module.exports = {
     getAll,
+    getBy,
     insert
 }
