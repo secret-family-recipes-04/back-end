@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
   })
 
 router.get('/:id', (req, res, next) => {
-    Users.getBy('id', req.params.id)
+    Users.getBy('user_id', req.params.id)
       .then(user => res.status(200).json(user))
       .catch(err => next(err))
 })
