@@ -18,15 +18,10 @@ const { checkAuth } = require('./auth/auth-middleware')
 const server = express()
 initializePassport(passport)
 
-const corsOptions ={
-    origin:'*', 
-    credentials:true,
-    optionSuccessStatus:200,
- }
-
 server.use(express.json())
 server.use(helmet())
-server.use(cors(corsOptions))
+server.use(cors())
+server.options('*', cors())
 server.use(flash())
 server.use(session({
     secret: process.env.SESSION_SECRET,
