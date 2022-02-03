@@ -9,8 +9,11 @@ router.get('/', (req, res, next) => {
   })
   
 router.post('/', (req, res, next) => {
+  
     Users.insert(req.body)
-        .then(user => res.status(201).json(user))
+        .then(user => {
+          res.set('Access-Control-Allow-Origin', '*')
+          return res.status(201).json(user)})
         .catch(err => next(err))
     
   })
