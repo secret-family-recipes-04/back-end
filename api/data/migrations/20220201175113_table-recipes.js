@@ -5,6 +5,10 @@ exports.up = function (knex) {
         tbl.text('recipe_name', 128)
           .unique()
           .notNullable();
+        tbl.text('source', 128)
+        tbl.text('serves', 128).notNullable
+        tbl.integer('prep_time', 128).notNullable
+        tbl.integer('cook_time', 128).notNullable
       })
       .createTable('ingredients', tbl => {
         tbl.increments('ingredient_id');
@@ -16,7 +20,7 @@ exports.up = function (knex) {
       .createTable('instructions', tbl => {
           tbl.increments('instruction_id')
           tbl.text('instruction_text', 128).notNullable()
-          tbl.float('step')
+          tbl.float('step_number')
           tbl.integer('recipe_id')
             .unsigned()
             .notNullable()
@@ -25,8 +29,8 @@ exports.up = function (knex) {
             .onDelete('RESTRICT')
             .onUpdate('RESTRICT')
       })
-      .createTable('ingredients-instructions', tbl => {
-        tbl.increments('ingredients-instruction_id')
+      .createTable('ingredients_instructions', tbl => {
+        tbl.increments('ingredients_instruction_id')
         tbl.integer('ingredient_id')
           .unsigned()
           .notNullable()
@@ -49,7 +53,7 @@ exports.up = function (knex) {
 
       exports.down = function (knex) {
         return knex.schema
-          .dropTableIfExists('ingredients-instructions')
+          .dropTableIfExists('ingredients_instructions')
           .dropTableIfExists('instructions')
           .dropTableIfExists('ingredients')
           .dropTableIfExists('recipes');
