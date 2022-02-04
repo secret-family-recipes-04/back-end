@@ -15,6 +15,7 @@ router.get('/:id', (req, res, next) => {
         .then(recipe => {
             res.json(recipe)
         })
+        .catch(next)
 })
 router.post('/', (req, res, next) => {
     res.json('post recipes')
