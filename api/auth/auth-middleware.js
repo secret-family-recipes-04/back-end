@@ -1,5 +1,6 @@
 const Users = require('../user/users-model')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const checkRegisterPayload = (req, res, next) => {
     const {email, password} = req.body
@@ -18,22 +19,40 @@ const checkRegisterPayload = (req, res, next) => {
     }
 }
 
-const checkAuth = (req, res, next) => {
-    if(req.isAuthenticated()){
-        next()
+const checkLoginPayload = (req, res, next) => {
+    const {email, password} = req.body
+    if(!email || !password){
+        next({status: 401, message:"email and password required"})
     } else {
-        res.redirect('https://secret-family-recipes-04.herokuapp.com/login')
+        Users.getBy('email', email)
+            .then(user => {
+                if(user && bcrypt.compareSync(password, user.password)){
+                    
+                    const accessToken = jwt.sign({name: user.email}, process.env.SESSION_SECRET)
+                    req.token = accessToken
+                    next()
+                } else {
+                    next({status: 400, message: 'Invalid credentials'})
+                }
+            })
     }
 }
 
-const checkNotAuth = (req, res, next) => {
-    if(req.isAuthenticated()){
-        res.redirect('https://secret-family-recipes-04.herokuapp.com/')
-    } else {
+
+const checkAuth = (req, res, next) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token === null) { next({status: 401, message:'Token required'})}
+
+    jwt.verify(token, process.env.SESSION_SECRET, (err, user) => {
+        if(err) {next({status: 403, message:'Token invalid'})}
+        req.user = user
         next()
-    }
+    })
 }
+
 module.exports = {
     checkRegisterPayload,
-    checkAuth
+    checkAuth,
+    checkLoginPayload
 }
