@@ -28,7 +28,7 @@ const checkLoginPayload = (req, res, next) => {
             .then(user => {
                 if(user && bcrypt.compareSync(password, user.password)){
                     
-                    const accessToken = jwt.sign({name: user.email}, process.env.SESSION_SECRET)
+                    const accessToken = jwt.sign({name: user.email}, process.env.SESSION_SECRET, {expiresIn: '30min'})
                     req.token = accessToken
                     next()
                 } else {
